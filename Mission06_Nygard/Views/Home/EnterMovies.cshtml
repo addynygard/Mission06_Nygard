@@ -5,8 +5,8 @@
 <h1> Enter Movies to the Dataset here: </h1>
 
 <form asp-action="EnterMovies" method="post">
-    <label asp-for="Category"> Category: </label>
-    <input asp-for="Category" />
+    <label asp-for="CategoryId"> Category: </label>
+    <input asp-for="CategoryId" />
     <br />
     <label asp-for="Title"> Title: </label>
     <input asp-for="Title" />
@@ -33,6 +33,9 @@
     <br />
     <label asp-for="LentTo"> LentTo: </label>
     <input asp-for="LentTo" />
+    <br />
+	<label asp-for="CopiedToPlex"> Copied to Plex? </label>
+    <input asp-for="CopiedToPlex" />
     <br />
     <label asp-for="Notes"> Notes: </label>
     <input asp-for="Notes" />
