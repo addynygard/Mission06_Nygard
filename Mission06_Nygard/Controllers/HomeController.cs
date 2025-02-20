@@ -31,6 +31,10 @@ namespace Mission06_Nygard.Controllers
         [HttpGet]
         public IActionResult EnterMovies()
         {
+            // puts all the categories into a list, gets the values from Categories table
+            var categories = _context.Categories
+                .OrderBy(x => x.CategoryName).ToList(); 
+
             return View();
         }
 
@@ -63,6 +67,17 @@ namespace Mission06_Nygard.Controllers
             _context.Movies.Add(response); // adds record to the database
             _context.SaveChanges(); // saves changes
             return View("Confirmation", response); // Return the confirmation view with the response
+        }
+
+
+        public IActionResult ViewMovies()
+        {
+            // using Linq to pull the data from the database and put it in a list
+           var movies = _context.Movies // this is the table name, and then the modifiers below
+                // .Where(x => x.Title == "Star Wars")
+                .OrderBy(x => x.Year).ToList(); 
+
+            return View(movies);
         }
 
 

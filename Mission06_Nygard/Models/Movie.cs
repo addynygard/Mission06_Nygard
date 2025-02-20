@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mission06_Nygard.Models
 {
@@ -8,18 +9,33 @@ namespace Mission06_Nygard.Models
         // Creates a MovieID property that is an integer and is required
         [Key]
         public int MovieID { get; set; }
-        
+
+
+
+
+
+
+        [ForeignKey("CategoryId")] // makes CategoryId a foreign key, that links to the table Categories
         // Creates a Category property that is a string and is required
-        public int? CategoryId { get; set; } // do I need this int.empty??
-        
+        public int? CategoryId { get; set; }
+
+        // Declaring Category as nullable to fix CS8618 error
+        public Category? Category { get; set; }
+
         // Creates a Title property that is a string and is required
+        
+        
+        
+        
+        
+        
         [Required]
         public string Title { get; set; } = string.Empty;
-        
+
         // Creates a Year property that is an integer and is required
         [Required]
         public int Year { get; set; }
-        
+
         // Creates a Rating property that is a string and is required
         public string? Rating { get; set; } = string.Empty; // this is now nullable
 
