@@ -5,9 +5,20 @@
 <h1> Enter Movies to the Dataset here: </h1>
 
 <form asp-action="EnterMovies" method="post">
-    <label asp-for="CategoryId"> Category: </label>
-    <input asp-for="CategoryId" />
+    
+    
+    <select asp-for="CategoryId">
+		<option value="">Select a Category</option>
+        @* for each category in the viewbag of all the categories *@
+		@foreach (Category c in ViewBag.Categories)
+		{
+            // behind the curtains, the user is selecting an id, and we are outputting the name of that id with this code (must be set up in the HomeControllor.cs first)
+			<option value="@c.CategoryId">@c.CategoryName</option>
+		})
+    </select>
+    
     <br />
+
     <label asp-for="Title"> Title: </label>
     <input asp-for="Title" />
     <br />

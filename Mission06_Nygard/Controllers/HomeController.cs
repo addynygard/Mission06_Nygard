@@ -32,7 +32,7 @@ namespace Mission06_Nygard.Controllers
         public IActionResult EnterMovies()
         {
             // puts all the categories into a list, gets the values from Categories table
-            var categories = _context.Categories
+            ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName).ToList(); 
 
             return View();
