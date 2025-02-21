@@ -11,9 +11,9 @@ namespace Mission06_Nygard.Controllers
         // Makes a private instance of the EnterMoviesContext class that everything can see
         private EnterMoviesContext _context;
         // Constructor that takes in a EnterMoviesContext object and assigns it to the private instance
-        public HomeController(EnterMoviesContext temp) 
-        { 
-            _context= temp;
+        public HomeController(EnterMoviesContext temp)
+        {
+            _context = temp;
         }
 
         // Returns the Index view
@@ -44,6 +44,18 @@ namespace Mission06_Nygard.Controllers
             {
                 response.LentTo = null;
             }
+            if (!response.CategoryId.HasValue)
+            {
+                response.CategoryId = null;
+            }
+            if (string.IsNullOrEmpty(response.Director))
+            {
+                response.Director = null;
+            }
+            if (string.IsNullOrEmpty(response.Rating))
+            {
+                response.Rating = null;
+            }
             // If the response.Notes is empty, set it to null
             if (string.IsNullOrEmpty(response.Notes))
             {
@@ -65,7 +77,12 @@ namespace Mission06_Nygard.Controllers
             return View("Confirmation", response); // Return the confirmation view with the response
         }
 
+        public IActionResult ViewMovies ()
+        {
+            var movies = _context.Movies
+                .OrderBy(x => x.Year).ToList();
 
-
+            return View(movies); 
+        }
     }
 }
