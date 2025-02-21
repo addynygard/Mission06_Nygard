@@ -5,18 +5,24 @@
 <h1> Enter Movies to the Dataset here: </h1>
 
 <form asp-action="EnterMovies" method="post">
-    
-    
+@* <form asp-action="@(Model.MovieID == 0 ? "EnterMovies" : "Edit")" method="post"> *@
+
+    @* // we want the MovieId to be in this, but we don't want the user to be able to see it when they create and edit a record *@
+ 
+    <input type="hidden" asp-for="MovieID"/>
+
+    <br />
+
     <select asp-for="CategoryId">
-		<option value="">Select a Category</option>
-        @* for each category in the viewbag of all the categories *@
-		@foreach (Category c in ViewBag.Categories)
-		{
-            // behind the curtains, the user is selecting an id, and we are outputting the name of that id with this code (must be set up in the HomeControllor.cs first)
-			<option value="@c.CategoryId">@c.CategoryName</option>
-		})
+        <option value="">Select a Category</option>
+        @foreach (Category c in ViewBag.Categories)
+        {
+            <option value="@c.CategoryId">@c.CategoryName</option>
+        }
     </select>
     
+    @* // behind the curtains, the user is selecting an id, and we are outputting the name of that id with this code (must be set up in the HomeControllor.cs first) *@
+
     <br />
 
     <label asp-for="Title"> Title: </label>

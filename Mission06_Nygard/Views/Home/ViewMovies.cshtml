@@ -15,6 +15,7 @@
 <table class="table table-bordered">
     <thead class="fw-bold">
         <tr>
+           
             <th>Title</th>
             <th>Year</th>
             <th>Rating</th>
@@ -23,6 +24,8 @@
             <th>Lent To</th>
             <th>Copied To Plex</th>
             <th>Notes</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +33,7 @@
         @foreach (var x in Model)
         {
             <tr>
+                
                 <td>@x.Title</td>
                 <td>@x.Year</td>
                 <td>@x.Rating</td>
@@ -39,8 +43,10 @@
                 <td>@x.CopiedToPlex</td>
                 <td>@x.Notes</td>
 
-                @* <td><a class="btn">Edit</a></td> *@
-                @* <td><a class="btn-danger">Delete</a></td> *@
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.MovieID">Edit</a></td>
+                @* creating a varible that will be sent through the asp route for that specific row;  *@
+                @* x is wherever we are at in the list in the foreach loop  *@
+                <td><a class="btn btn-danger">Delete</a></td>
             </tr>
         }
     </tbody>

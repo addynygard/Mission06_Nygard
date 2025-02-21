@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mission06_Nygard.Models;
 
 // Creates controllers
@@ -41,33 +42,39 @@ namespace Mission06_Nygard.Controllers
         // Posts the EnterMovies view so data will go into the database
 
         [HttpPost]
+        
         public IActionResult EnterMovies(Movie response)
         {
-            // If the response.LentTo is empty, set it to null
             if (string.IsNullOrEmpty(response.LentTo))
-            {
-                response.LentTo = null;
-            }
-            // If the response.Notes is empty, set it to null
+                {
+                    response.LentTo = null;
+                }
             if (string.IsNullOrEmpty(response.Notes))
-            {
-                response.Notes = null;
-            }
-            // If the response.Notes is greater than 25 characters, add a model error
+                {
+                    response.Notes = null;
+                }
             else if (response.Notes.Length > 25)
-            {
-                ModelState.AddModelError("Notes", "Notes must be 25 characters or less.");
-            }
-            // If the model state is not valid, return the view with the response
+                {
+                    ModelState.AddModelError("Notes", "Notes must be 25 characters or less.");
+                }
             if (!ModelState.IsValid)
-            {
-                return View(response); // Return the view with validation errors
-            }
+                {
+                    return View(response);
+                }
 
-            _context.Movies.Add(response); // adds record to the database
-            _context.SaveChanges(); // saves changes
-            return View("Confirmation", response); // Return the confirmation view with the response
+            if (_context.Movies.Any(m => m.MovieID == response.MovieID))
+                {
+                    _context.Movies.Update(response); // 
+                }
+            else
+                {
+                    _context.Movies.Add(response);
+                }
+
+            _context.SaveChanges();
+            return View("Confirmation", response);
         }
+
 
 
         public IActionResult ViewMovies()
@@ -80,7 +87,32 @@ namespace Mission06_Nygard.Controllers
             return View(movies);
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+            // int represents the record id; that is just a name (see entermovies.cshtml
+        {
 
+            var recordToEdit = _context.Movies
+                //.Include(x => x.Movie)
+                .Single(x => x.MovieID == id);  // to find which record to edit; uniquly identify Movie with MovieID
+
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName).ToList();
+
+
+            // with just a return pointed to EnterMovies, there are no Categories loaded up; those are in the class a few lines up called EnterMovies
+            // so instead of return, do "RedirectToAction" and then the name of the method
+            return View("EnterMovies", recordToEdit);
+        }
+        [HttpPost]
+
+        public IActionResult Edit(Movie app)
+        {
+            _context.Update(app);
+            _context.SaveChanges();
+
+            return RedirectToAction("ViewMovies"); // ? Redirects to ViewMovies after editing
+        }
 
     }
 }
