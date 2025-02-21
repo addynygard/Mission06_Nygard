@@ -36,7 +36,7 @@ namespace Mission06_Nygard.Controllers
             ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName).ToList();
 
-            return View("EnterMovie");
+            return View("EnterMovies");
         }
 
 

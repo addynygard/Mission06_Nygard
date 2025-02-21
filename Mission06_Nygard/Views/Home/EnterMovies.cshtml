@@ -4,7 +4,7 @@
 @* // this is where the user can enter the movies to the dataset with the form below (also contains all the fields and a button at the end) *@
 <h1> Enter Movies to the Dataset here: </h1>
 
-<form asp-action="EnterMovies" method="post">
+<form method="post">
 @* <form asp-action="@(Model.MovieID == 0 ? "EnterMovies" : "Edit")" method="post"> *@
 
     @* // we want the MovieId to be in this, but we don't want the user to be able to see it when they create and edit a record *@
