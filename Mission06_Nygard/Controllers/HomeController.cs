@@ -34,45 +34,65 @@ namespace Mission06_Nygard.Controllers
         {
             // puts all the categories into a list, gets the values from Categories table
             ViewBag.Categories = _context.Categories
-                .OrderBy(x => x.CategoryName).ToList(); 
+                .OrderBy(x => x.CategoryName).ToList();
 
-            return View();
+            return View("EnterMovie");
         }
+
+
 
         // Posts the EnterMovies view so data will go into the database
 
-        [HttpPost]
+        //[HttpPost]
         
+        //public IActionResult EnterMovies(Movie response)
+        //{
+        //    if (string.IsNullOrEmpty(response.LentTo))
+        //        {
+        //            response.LentTo = null;
+        //        }
+        //    if (string.IsNullOrEmpty(response.Notes))
+        //        {
+        //            response.Notes = null;
+        //        }
+        //    else if (response.Notes.Length > 25)
+        //        {
+        //            ModelState.AddModelError("Notes", "Notes must be 25 characters or less.");
+        //        }
+        //    if (!ModelState.IsValid)
+        //        {
+        //            return View(response);
+        //        }
+
+        //    if (_context.Movies.Any(m => m.MovieID == response.MovieID))
+        //        {
+        //            _context.Movies.Update(response); // 
+        //        }
+        //    else
+        //        {
+        //            _context.Movies.Add(response);
+        //        }
+
+        //    _context.SaveChanges();
+        //    return View("Confirmation", response);
+        //}
+
+        [HttpPost]
         public IActionResult EnterMovies(Movie response)
         {
-            if (string.IsNullOrEmpty(response.LentTo))
-                {
-                    response.LentTo = null;
-                }
-            if (string.IsNullOrEmpty(response.Notes))
-                {
-                    response.Notes = null;
-                }
-            else if (response.Notes.Length > 25)
-                {
-                    ModelState.AddModelError("Notes", "Notes must be 25 characters or less.");
-                }
-            if (!ModelState.IsValid)
-                {
-                    return View(response);
-                }
-
-            if (_context.Movies.Any(m => m.MovieID == response.MovieID))
-                {
-                    _context.Movies.Update(response); // 
-                }
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Add(response);
+                _context.SaveChanges();
+                return View("Confirmation", response);
+            }
             else
-                {
-                    _context.Movies.Add(response);
-                }
+            {
+                ViewBag.Category = _context.Categories
+                       .ToList();
 
-            _context.SaveChanges();
-            return View("Confirmation", response);
+                return View(response);
+            }
         }
 
 

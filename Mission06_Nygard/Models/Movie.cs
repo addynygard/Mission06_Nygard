@@ -12,15 +12,12 @@ namespace Mission06_Nygard.Models
 
 
 
-
-
-
         [ForeignKey("CategoryId")] // makes CategoryId a foreign key, that links to the table Categories
         // Creates a Category property that is a string and is required
         public int? CategoryId { get; set; }
 
         // Declaring Category as nullable to fix CS8618 error
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
 
         // Creates a Title property that is a string and is required
         
