@@ -46,7 +46,7 @@
                 <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.MovieId">Edit</a></td>
                 @* creating a varible that will be sent through the asp route for that specific row;  *@
                 @* x is wherever we are at in the list in the foreach loop  *@
-                <td><a class="btn btn-danger">Delete</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.MovieId">Delete</a></td>
             </tr>
         }
     </tbody>

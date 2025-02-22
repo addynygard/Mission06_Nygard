@@ -28,6 +28,7 @@ namespace Mission06_Nygard.Controllers
             return View();
         }
 
+        
         // Returns the EnterMovies view
         [HttpGet]
         public IActionResult EnterMovies()
@@ -46,64 +47,10 @@ namespace Mission06_Nygard.Controllers
 
         // Posts the EnterMovies view so data will go into the database
 
-        //[HttpPost]
-
-        //public IActionResult EnterMovies(Movie response)
-        //{
-        //    if (string.IsNullOrEmpty(response.LentTo))
-        //        {
-        //            response.LentTo = null;
-        //        }
-        //    if (string.IsNullOrEmpty(response.Notes))
-        //        {
-        //            response.Notes = null;
-        //        }
-        //    else if (response.Notes.Length > 25)
-        //        {
-        //            ModelState.AddModelError("Notes", "Notes must be 25 characters or less.");
-        //        }
-        //    if (!ModelState.IsValid)
-        //        {
-        //            return View(response);
-        //        }
-
-        //    if (_context.Movies.Any(m => m.MovieID == response.MovieID))
-        //        {
-        //            _context.Movies.Update(response); // 
-        //        }
-        //    else
-        //        {
-        //            _context.Movies.Add(response);
-        //        }
-
-        //    _context.SaveChanges();
-        //    return View("Confirmation", response);
-        //}
-
-        //[HttpPost]
-        //public IActionResult EnterMovies(Movie response)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Movies.Add(response);
-        //        _context.SaveChanges();
-        //        return View("Confirmation", response);
-        //    }
-        //    else
-        //    {
-        //        //ViewBag.Categories = _context.Categories
-        //        //       .ToList();
-        //        ViewBag.Categories = _context.Categories
-        //        .OrderBy(x => x.CategoryName).ToList();
-
-        //        return View(response);
-        //    }
-        //}
-
         [HttpPost]
         public IActionResult EnterMovies(Movie response)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // if the model is valid, then add the movie to the database
             {
                 if (response.MovieId == 0)
                 {
@@ -119,7 +66,7 @@ namespace Mission06_Nygard.Controllers
                 _context.SaveChanges();
                 return View("Confirmation", response);
             }
-            else
+            else // if the model is not valid, then return the view with the model
             {
                 ViewBag.Categories = _context.Categories
                     .OrderBy(x => x.CategoryName).ToList();
@@ -147,8 +94,8 @@ namespace Mission06_Nygard.Controllers
             var recordToEdit = _context.Movies
                 .Single(x => x.MovieId == id);  // to find which record to edit; uniquly identify Movie with MovieID
 
-            ViewBag.Categories = _context.Categories
-                .OrderBy(x => x.CategoryName).ToList();
+            ViewBag.Categories = _context.Categories // this is the table name, and then the modifiers below
+                .OrderBy(x => x.CategoryName).ToList(); // to put the categories in a list
 
 
             // with just a return pointed to EnterMovies, there are no Categories loaded up; those are in the class a few lines up called EnterMovies
@@ -159,11 +106,32 @@ namespace Mission06_Nygard.Controllers
 
         public IActionResult Edit(Movie app)
         {
-            _context.Update(app);
-            _context.SaveChanges();
+            _context.Update(app); // updates the database with the new information
+            _context.SaveChanges(); // saves the changes to the database
 
             return RedirectToAction("ViewMovies"); // ? Redirects to ViewMovies after editing
         }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var recordToDelete = _context.Movies // this is the table name, and then the modifiers below
+                .Single(x => x.MovieId == id); // to find which record to delete; uniquly identify Movie with MovieID
+
+            return View(recordToDelete); 
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Movie movie)
+        {
+            _context.Movies.Remove(movie); // removes the movie from the database
+            _context.SaveChanges(); // saves the changes to the database
+
+            return RedirectToAction("ViewMovies"); // Redirects to ViewMovies after deleting
+        }
+
+
 
     }
 }
