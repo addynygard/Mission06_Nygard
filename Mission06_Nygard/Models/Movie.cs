@@ -7,30 +7,29 @@ namespace Mission06_Nygard.Models
     public class Movie
     {
         // Creates a MovieID property that is an integer and is required
+        
         [Key]
-        public int MovieID { get; set; }
+        [Required]
+        public int MovieId { get; set; }
 
+        
+        public int? CategoryId { get; set; }
 
 
         [ForeignKey("CategoryId")] // makes CategoryId a foreign key, that links to the table Categories
         // Creates a Category property that is a string and is required
-        public int? CategoryId { get; set; }
-
         // Declaring Category as nullable to fix CS8618 error
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         // Creates a Title property that is a string and is required
-        
-        
-        
-        
-        
-        
+   
+     
         [Required]
         public string Title { get; set; } = string.Empty;
 
         // Creates a Year property that is an integer and is required
         [Required]
+        [Range(1888, int.MaxValue, ErrorMessage = "Year must be 1888 or later.")]
         public int Year { get; set; }
 
         // Creates a Rating property that is a string and is required

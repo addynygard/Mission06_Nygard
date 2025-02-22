@@ -33,10 +33,13 @@ namespace Mission06_Nygard.Controllers
         public IActionResult EnterMovies()
         {
             // puts all the categories into a list, gets the values from Categories table
+            
+
             ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName).ToList();
 
-            return View("EnterMovies");
+            return View(new Movie());
+            // put "EnterMovies" in the view
         }
 
 
@@ -44,7 +47,7 @@ namespace Mission06_Nygard.Controllers
         // Posts the EnterMovies view so data will go into the database
 
         //[HttpPost]
-        
+
         //public IActionResult EnterMovies(Movie response)
         //{
         //    if (string.IsNullOrEmpty(response.LentTo))
@@ -77,19 +80,49 @@ namespace Mission06_Nygard.Controllers
         //    return View("Confirmation", response);
         //}
 
+        //[HttpPost]
+        //public IActionResult EnterMovies(Movie response)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Movies.Add(response);
+        //        _context.SaveChanges();
+        //        return View("Confirmation", response);
+        //    }
+        //    else
+        //    {
+        //        //ViewBag.Categories = _context.Categories
+        //        //       .ToList();
+        //        ViewBag.Categories = _context.Categories
+        //        .OrderBy(x => x.CategoryName).ToList();
+
+        //        return View(response);
+        //    }
+        //}
+
         [HttpPost]
         public IActionResult EnterMovies(Movie response)
         {
             if (ModelState.IsValid)
             {
-                _context.Movies.Add(response);
+                if (response.MovieId == 0)
+                {
+                    // Add new movie
+                    _context.Movies.Add(response);
+                }
+                else
+                {
+                    // Update existing movie
+                    _context.Movies.Update(response);
+                }
+
                 _context.SaveChanges();
                 return View("Confirmation", response);
             }
             else
             {
-                ViewBag.Category = _context.Categories
-                       .ToList();
+                ViewBag.Categories = _context.Categories
+                    .OrderBy(x => x.CategoryName).ToList();
 
                 return View(response);
             }
@@ -101,7 +134,6 @@ namespace Mission06_Nygard.Controllers
         {
             // using Linq to pull the data from the database and put it in a list
            var movies = _context.Movies // this is the table name, and then the modifiers below
-                // .Where(x => x.Title == "Star Wars")
                 .OrderBy(x => x.Year).ToList(); 
 
             return View(movies);
@@ -113,8 +145,7 @@ namespace Mission06_Nygard.Controllers
         {
 
             var recordToEdit = _context.Movies
-                //.Include(x => x.Movie)
-                .Single(x => x.MovieID == id);  // to find which record to edit; uniquly identify Movie with MovieID
+                .Single(x => x.MovieId == id);  // to find which record to edit; uniquly identify Movie with MovieID
 
             ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName).ToList();

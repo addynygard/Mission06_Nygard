@@ -6,6 +6,8 @@ namespace Mission06_Nygard.Models
     {
         [Key]
         public int CategoryId { get; set; }
+        
+        [Required]
         public string CategoryName { get; set; } = string.Empty;
     }
 }
